@@ -1,0 +1,10 @@
+>> Urls
+
+- Sign Up
+http://127.0.0.1:8000/api/sign-up/
+
+- Login
+http://127.0.0.1:8000/api/login/
+
+- Refresh Token
+http://127.0.0.1:8000/api/token/refresh/
