@@ -7,18 +7,40 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
+# class SignUpView(GenericAPIView):
+#     permission_classes = (AllowAny,)
+#     serializer_class = UserSignUpSerializer
+
+#     def post(self, request):
+#         serializer = UserSignUpSerializer(data=request.data)
+#         if serializer.is_valid():
+#             user = serializer.save()
+#             token = RefreshToken.for_user(user)
+#             data = serializer.data
+#             data['tokens'] = {'refresh': str(token), 'access': str(token.access_token)}
+#             return Response(data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class SignUpView(GenericAPIView):
     permission_classes = (AllowAny,)
     serializer_class = UserSignUpSerializer
 
     def post(self, request):
         serializer = UserSignUpSerializer(data=request.data)
+        print('='*10)
+        print(f'request_data = {request.data}')
+        print(serializer)
         if serializer.is_valid():
+            print('serializer is valid')
             user = serializer.save()
             token = RefreshToken.for_user(user)
             data = serializer.data
+            print(f'serializer_data = {data}')
             data['tokens'] = {'refresh': str(token), 'access': str(token.access_token)}
+            print(f'data = {data}')
             return Response(data, status=status.HTTP_201_CREATED)
+        print('serializer is not valid')
+        print('='*10)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # class LoginView(GenericAPIView):
