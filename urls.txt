@@ -1,4 +1,10 @@
->> Urls
+>> Urls <<
+
+- Admin Page >> contains database tables and users permissions 
+http://127.0.0.1:8000/admin/
+
+email: admin@gmail.com
+password: 123456
 
 - Sign Up
 http://127.0.0.1:8000/api/sign-up/
@@ -8,3 +14,6 @@ http://127.0.0.1:8000/api/login/
 
 - Refresh Token
 http://127.0.0.1:8000/api/token/refresh/
+
+- Logout
+http://127.0.0.1:8000/api/logout/

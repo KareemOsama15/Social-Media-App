@@ -1,4 +1,5 @@
 from django.db import models
+from users.models import CustomUser
 
 
 class Post(models.Model):
@@ -9,7 +10,7 @@ class Post(models.Model):
     updated_at = models.DateTimeField(auto_now=True) 
 
     def __str__(self):
-        return f"{self.author.username} - {self.timestamp[:16]}"
+        return f"{self.author.username} - {self.created_at}"
 
 """class Connection(models.Model):
     from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
