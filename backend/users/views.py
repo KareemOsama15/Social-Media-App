@@ -1,14 +1,15 @@
 # from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import UserSignUpSerializer, UserLoginSerializer
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.generics import GenericAPIView
+from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from .serializers import UserSignUpSerializer, UserLoginSerializer, UserInfoSerializer
+from .models import CustomUser
 
 
-class SignUpView(GenericAPIView):
+class SignUpView(generics.GenericAPIView):
     """
     SignUpView class handle sign-up process
     """
@@ -25,7 +26,7 @@ class SignUpView(GenericAPIView):
             return Response(data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class LoginView(GenericAPIView):
+class LoginView(generics.GenericAPIView):
     """
     LoginView class that handles login process
     """
@@ -45,7 +46,7 @@ class LoginView(GenericAPIView):
             return Response(data, status=status.HTTP_200_OK)
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
-class LogoutView(GenericAPIView):
+class LogoutView(generics.GenericAPIView):
     """
     LogoutView class that handles logout process
     """
@@ -59,3 +60,11 @@ class LogoutView(GenericAPIView):
             return Response(status=status.HTTP_200_OK)
         except Exception as e:
             return Response(status= status.HTTP_400_BAD_REQUEST)
+
+class UserInfoView(generics.ListAPIView):
+    """
+    UserInfoView lists all users registered in the web application
+    """
+    queryset = CustomUser.objects.all()
+    serializer_class = UserInfoSerializer
+    permission_classes = (AllowAny,)
