@@ -17,3 +17,15 @@ http://127.0.0.1:8000/api/token/refresh/
 
 - Logout
 http://127.0.0.1:8000/api/logout/
+
+- User Info
+http://127.0.0.1:8000/api/users-info/
+
+- Create Post
+http://127.0.0.1:8000/api/posts/create/
+
+- List all Posts in Home
+http://127.0.0.1:8000/api/posts/
+
+- Display one single post item > replace id with the post_id sent in response
+http://127.0.0.1:8000/api/posts/id/

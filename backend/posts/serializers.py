@@ -2,16 +2,22 @@ from rest_framework import serializers
 from .models import Post
 
 class CreatePostSerializer(serializers.ModelSerializer):
+    """
+    serialize and validate data of creating a post
+    """
     class Meta:
         model = Post
         fields = ['content', 'image']
 
-class ListPostSerializer(serializers.ModelSerializer):
+class ListRetrievePostSerializer(serializers.ModelSerializer):
+    """
+    serialize post's data to implement list posts or retrieve a single one 
+    """
     username = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Post
-        fields = ['username', 'content', 'image']
+        fields = ['id', 'username', 'content', 'image']
 
     def get_username(self, obj):
         return obj.author.username
