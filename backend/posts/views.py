@@ -40,3 +40,22 @@ class PostListRetrieveApiView(generics.ListAPIView, generics.RetrieveAPIView):
         if pk:
             return self.retrieve(request, *args, **kwargs)
         return self.list(request, *args, **kwargs)
+
+class PostUpdateApiView(generics.UpdateAPIView):
+    """Class view updates a Post instance """
+    quetyset = Post.objects.all()
+    serializer_class = CreatePostSerializer # will we create a new serializer class for update?
+    lookup_field = 'pk'
+
+    def perform_update(self, serializer):
+        serializer.save()
+
+
+class PostDestroyApiView(generics.DestroyAPIView):
+    """Class view destroys a Post instance """
+    quetyset = Post.objects.all()
+    serializer_class = CreatePostSerializer # will we create a new serializer class for update?
+    lookup_field = 'pk'
+
+    def perform_perform(self, instance):
+        super().perform_destroy(instance)
