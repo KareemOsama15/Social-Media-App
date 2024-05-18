@@ -29,3 +29,9 @@ http://127.0.0.1:8000/api/posts/
 
 - Display one single post item > replace id with the post_id sent in response
 http://127.0.0.1:8000/api/posts/id/
+
+- Delete Post
+http://127.0.0.1:8000/api/posts/id/delete/
+
+- Update Post
+http://127.0.0.1:8000/api/posts/id/update/

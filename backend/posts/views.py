@@ -4,14 +4,15 @@ from rest_framework import generics
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
 from .models import Post
-from .serializers import CreatePostSerializer, ListRetrievePostSerializer
+from .serializers import PostSerializer, ListRetrievePostSerializer
+from django.shortcuts import get_object_or_404
 
 class PostCreateApiView(generics.CreateAPIView):
-    """
+    """from django.shortcuts import get_object_or_404
     class view implements creating a new post instance
     """
     queryset = Post.objects.all()
-    serializer_class = CreatePostSerializer
+    serializer_class = PostSerializer
     permission_classes = [IsAuthenticated,]
 
     def create(self, request, *args, **kwargs):
@@ -44,18 +45,28 @@ class PostListRetrieveApiView(generics.ListAPIView, generics.RetrieveAPIView):
 class PostUpdateApiView(generics.UpdateAPIView):
     """Class view updates a Post instance """
     queryset = Post.objects.all()
-    serializer_class = CreatePostSerializer # will we create a new serializer class for update?
+    serializer_class = PostSerializer
     lookup_field = 'pk'
 
-    def perform_update(self, serializer):
-        serializer.save()
+    def put(self, request, *args, **kwargs):
+        pk = kwargs.get('pk')
+        post = get_object_or_404(Post, pk=pk)
+        user = str(request.user)
+        if user == post.author.email:
+            return self.update(request, *args, **kwargs)
+        return Response({'message': 'Update Post Not Allowed'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class PostDestroyApiView(generics.DestroyAPIView):
     """Class view destroys a Post instance """
-    quetyset = Post.objects.all()
-    serializer_class = CreatePostSerializer # will we create a new serializer class for update?
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
     lookup_field = 'pk'
 
-    def perform_destroy(self, instance):
-        super().perform_destroy(instance)
+    def delete(self, request, *args, **kwargs):
+        pk = kwargs.get('pk')
+        post = get_object_or_404(Post, pk=pk)
+        user = str(request.user)
+        if user == post.author.email:
+            return self.destroy(request, *args, **kwargs)
+        return Response({'message': 'Delete Post Not Allowed'}, status=status.HTTP_400_BAD_REQUEST)

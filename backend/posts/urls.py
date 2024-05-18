@@ -6,5 +6,5 @@ urlpatterns = [
     path('<int:pk>/', PostListRetrieveApiView.as_view()),
     path('create/',  PostCreateApiView.as_view()),
     path('<int:pk>/update/', PostUpdateApiView.as_view()),
-    path('<int:pk>/destroy/', PostDestroyApiView.as_view()),
+    path('<int:pk>/delete/', PostDestroyApiView.as_view()),
 ]
