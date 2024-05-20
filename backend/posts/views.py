@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework import generics
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
-from .models import Post
+from .models import Post, Like
 from .serializers import PostSerializer, ListRetrievePostSerializer
 from django.shortcuts import get_object_or_404
 
@@ -70,3 +70,17 @@ class PostDestroyApiView(generics.DestroyAPIView):
         if user == post.author.email:
             return self.destroy(request, *args, **kwargs)
         return Response({'message': 'Delete Post Not Allowed'}, status=status.HTTP_400_BAD_REQUEST)
+
+class LikePostApiView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated,]
+    lookup_field = 'pk'
+
+    def post(self, request, *args, **kwargs):
+        post_id = kwargs.get('pk')
+        post = get_object_or_404(Post, pk=post_id)
+        like_exist = Like.objects.filter(author=request.user, post=post).first()
+        if like_exist:
+            like_exist.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        Like.objects.create(author=request.user, post=post)
+        return Response(status=status.HTTP_201_CREATED)
