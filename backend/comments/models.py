@@ -2,7 +2,7 @@ from django.db import models
 from posts.models import Post
 from users.models import CustomUser
 
-class Comment(moodels.Model):
+class Comment(models.Model):
     """class for Comment of the Post model"""
     content = models.TextField(null=False)
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
