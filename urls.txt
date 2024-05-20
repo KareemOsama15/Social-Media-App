@@ -1,40 +1,198 @@
 >> Urls <<
 
-- Admin Page >> contains database tables and users permissions 
+-> Admin Page: contains database tables and users permissions 
 http://127.0.0.1:8000/admin/
 
 email: admin@gmail.com
 password: 123456
 
-- Sign Up
+=======================================
+
+-> Sign Up
 http://127.0.0.1:8000/api/sign-up/
 
-- Login
+request:
+    -method: post
+    -fields: email, username, password [All Required]
+
+response-data:
+    {
+        "username": "",
+        "email": "",
+        "tokens": {
+            "access": "",
+            "refresh": ""
+        }
+    }
+
+=========================================
+
+-> Login
 http://127.0.0.1:8000/api/login/
 
-- Refresh Token
+request:
+    -method: post
+    -fields: email, password [All Required]
+
+response-data:
+    {
+        "message": "Login successful",
+        "tokens": {
+            "refresh": "",
+            "access": ""
+        }
+    }
+
+=========================================
+
+-> Refresh Token
 http://127.0.0.1:8000/api/token/refresh/
 
-- Logout
+request:
+    -method: post
+    -headers: accsee-token [Required]
+
+response-data:
+    {
+        "access": "",
+        "refresh": ""
+    }
+
+=========================================
+-> Logout
 http://127.0.0.1:8000/api/logout/
 
-- User Info
+request:
+    -method: post
+    -headers: accsee-token [Required]
+
+response:
+    status-code: 200
+
+=========================================
+
+-> User Info
 http://127.0.0.1:8000/api/users-info/
 
-- Create Post
+request:
+    -method: get
+
+response-data:
+    [
+        {
+            "id": ,
+            "username": "",
+            "email": ""
+        },
+        ...
+    ]
+
+=========================================
+
+-> Create Post
 http://127.0.0.1:8000/api/posts/create/
 
-- List all Posts in Home
+request:
+    -method: post
+    -headers: accsee-token [Required]
+    -fields:
+        content: Required
+        image: can be null
+
+response-data:
+    {
+        "content": "",
+        "image": ""
+    }
+
+=========================================
+
+-> List Posts
 http://127.0.0.1:8000/api/posts/
 
-- Display one single post item > replace id with the post_id sent in response
+request:
+    -method: get
+    -headers: accsee-token [Required]
+
+response-data:
+    [
+        {
+            "id": 1,
+            "username": "",
+            "content": "",
+            "image": "IMAGE_SOURCE",
+            "created_at": "",
+            "updated_at": "",
+            "likes": 0
+        },
+        ...
+    ]
+
+=========================================
+
+-> Retrieve Post
 http://127.0.0.1:8000/api/posts/id/
 
-- Delete Post
+request:
+    -method: get
+    -headers: accsee-token [Required]
+    -post_id: Required in url
+
+response-data:
+    {
+        "id": 1,
+        "username": "",
+        "content": "",
+        "image": "IMAGE_SOURCE",
+        "created_at": "",
+        "updated_at": "",
+        "likes": 0
+    }
+
+=========================================
+
+-> Delete Post
 http://127.0.0.1:8000/api/posts/id/delete/
 
-- Update Post
+request:
+    -method: delete
+    -headers: accsee-token [Required]
+    -post_id: Required in url
+
+response:
+    status-code: 204
+
+=========================================
+
+-> Update Post
 http://127.0.0.1:8000/api/posts/id/update/
 
-- Like Post
+request:
+    -method: put
+    -headers: accsee-token [Required]
+    -post_id: Required in url
+    -fields:
+        content: Required
+        image: can be null or as user choose when created the post
+
+response-data:
+    {
+        "content": "",
+        "image": ""
+    }
+
+=========================================
+
+-> Like Post
 http://127.0.0.1:8000/api/posts/id/like/
+
+request:
+    -method: post
+    -headers: accsee-token [Required]
+    -post_id: Required in url
+
+response:
+    status-code: 201 [added]
+    status-code: 204 [deleted]
+
+=========================================
