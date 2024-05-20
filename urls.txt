@@ -1,4 +1,10 @@
->> Urls
+>> Urls <<
+
+- Admin Page >> contains database tables and users permissions 
+http://127.0.0.1:8000/admin/
+
+email: admin@gmail.com
+password: 123456
 
 - Sign Up
 http://127.0.0.1:8000/api/sign-up/
@@ -8,3 +14,24 @@ http://127.0.0.1:8000/api/login/
 
 - Refresh Token
 http://127.0.0.1:8000/api/token/refresh/
+
+- Logout
+http://127.0.0.1:8000/api/logout/
+
+- User Info
+http://127.0.0.1:8000/api/users-info/
+
+- Create Post
+http://127.0.0.1:8000/api/posts/create/
+
+- List all Posts in Home
+http://127.0.0.1:8000/api/posts/
+
+- Display one single post item > replace id with the post_id sent in response
+http://127.0.0.1:8000/api/posts/id/
+
+- Delete Post
+http://127.0.0.1:8000/api/posts/id/delete/
+
+- Update Post
+http://127.0.0.1:8000/api/posts/id/update/
