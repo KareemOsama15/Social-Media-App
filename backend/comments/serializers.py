@@ -3,7 +3,7 @@ from .models import Comment
 from users.models import CustomUser
 
 class CommentSerializer(serializers.ModelSerializer):
-    author = serializers.CharField(source='user.username',read_only=True) # it this the right way or shoulr i use 'CustomUser'?
+    author = serializers.CharField(source='self.request.user',read_only=True)
 
 	class Meta:
 		model = Comment

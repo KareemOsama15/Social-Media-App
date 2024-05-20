@@ -7,10 +7,9 @@ class Comment(moodels.Model):
     content = models.TextField(null=False)
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to='posts_images/', null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True) 
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
-    likes = models.PositiveIntegerField(default=0)
+    # likes = models.PositiveIntegerField(default=0)
 
 
     def __str__(self):
