@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import RefreshToken from './RefreshToken';
+
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
- 
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  axios.post('http://127.0.0.1:8000/api/login/', { email, password })
+    axios.post('http://127.0.0.1:8000/api/login/', { email, password })
       .then(result => {
-        
         console.log(result);
-        if (result.data.message === 'Login successful') {
+        if (result.data.tokens) {
+          const { refresh, access } = result.data.tokens;
+          localStorage.setItem('refreshToken', refresh);
+          localStorage.setItem('accessToken', access);
           navigate('/home');
         } else {
           setErrorMessage(result.data.error || 'Invalid email or password');
@@ -22,17 +25,16 @@ export default function Login() {
       })
       .catch(err => {
         console.error(err);
-        setErrorMessage('An error occurred. Please try again.');
+        setErrorMessage('Invalid email or password');
       });
   };
 
   return (
     <>
-      <div className='flex justify-center items-center' style={{background:"#f0f2f5",height:"100vh"}}>
+    <RefreshToken/>
+      <div className='flex justify-center items-center' style={{height:"100vh"}}>
         <div className='container'>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-          
-
             <div className=' p-5'>
               <img className='w-full' src='https://static.xx.fbcdn.net/rsrc.php/y1/r/4lCu2zih0ca.svg' alt='facebook' />
               <h5 className='text-center  p-5 '>Facebook enables you to communicate with people and share what you want with them.</h5>
@@ -53,7 +55,7 @@ export default function Login() {
                   className='w-full border rounded-lg p-2 mb-3'
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                {errorMessage && <div className="text-danger mt-3">{errorMessage}</div>}
+                {errorMessage && <div className="text-red-600 mt-3">{errorMessage}</div>}
                 <button type='submit' className='w-full bg-blue-500 text-white rounded-lg py-2 mb-3'>
                   Login
                 </button>
