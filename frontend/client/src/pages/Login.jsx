@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import RefreshToken from './RefreshToken';
+
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -31,7 +31,7 @@ export default function Login() {
 
   return (
     <>
-    <RefreshToken/>
+   
       <div className='flex justify-center items-center' style={{height:"100vh"}}>
         <div className='container'>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
