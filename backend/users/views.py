@@ -1,87 +1,55 @@
 # from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import UserSignUpSerializer, UserLoginSerializer
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.generics import GenericAPIView
+from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from .serializers import UserSignUpSerializer, UserLoginSerializer, UserInfoSerializer
+from .models import CustomUser
 
-# class SignUpView(GenericAPIView):
-#     permission_classes = (AllowAny,)
-#     serializer_class = UserSignUpSerializer
 
-#     def post(self, request):
-#         serializer = UserSignUpSerializer(data=request.data)
-#         if serializer.is_valid():
-#             user = serializer.save()
-#             token = RefreshToken.for_user(user)
-#             data = serializer.data
-#             data['tokens'] = {'refresh': str(token), 'access': str(token.access_token)}
-#             return Response(data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class SignUpView(GenericAPIView):
+class SignUpView(generics.GenericAPIView):
+    """
+    SignUpView class handle sign-up process
+    """
     permission_classes = (AllowAny,)
     serializer_class = UserSignUpSerializer
 
     def post(self, request):
         serializer = UserSignUpSerializer(data=request.data)
-        print('='*10)
-        print(f'request_data = {request.data}')
-        print(serializer)
-        if serializer.is_valid():
-            print('serializer is valid')
+        if serializer.is_valid(raise_exception=True):
             user = serializer.save()
             token = RefreshToken.for_user(user)
             data = serializer.data
-            print(f'serializer_data = {data}')
             data['tokens'] = {'refresh': str(token), 'access': str(token.access_token)}
-            print(f'data = {data}')
             return Response(data, status=status.HTTP_201_CREATED)
-        print('serializer is not valid')
-        print('='*10)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# class LoginView(GenericAPIView):
-#     permission_classes = (AllowAny,)
-#     serializer_class = UserLoginSerializer
-
-#     def post(self, request):
-#         email = request.data.get('email')
-#         password = request.data.get('password')
-#         user = authenticate(email=email, password=password)
-#         if user:
-#             token = RefreshToken.for_user(user)
-#             return Response({'refresh': str(token), 'access': str(token.access_token)})
-#         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
-class LoginView(GenericAPIView):
+class LoginView(generics.GenericAPIView):
+    """
+    LoginView class that handles login process
+    """
     permission_classes = (AllowAny,)
     serializer_class = UserLoginSerializer
 
     def post(self, request):
         email = request.data.get('email')
         password = request.data.get('password')
-        print('='*10)
-        print(request)
-        print(request.data)
-        print(f'\nemail={email}\npassword={password}')
         user = authenticate(email=email, password=password)
-        print(f'\nuser={user}')
         if user:
-            print('User authenticated successfully\n')
-            print('='*10)
             token = RefreshToken.for_user(user)
             data = {
                 'message': 'Login successful',
                 'tokens': {'refresh': str(token), 'access': str(token.access_token)}
             }
-            return Response(data)
-        print('User authenticated Failled\n')
-        print('='*10)
+            return Response(data, status=status.HTTP_200_OK)
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
-class LogoutView(GenericAPIView):
+class LogoutView(generics.GenericAPIView):
+    """
+    LogoutView class that handles logout process
+    """
     permission_classes = (IsAuthenticated,)
     
     def post(self, request, *args, **kwargs):
@@ -89,6 +57,14 @@ class LogoutView(GenericAPIView):
             refresh_token = request.data["refresh"]
             token = RefreshToken(refresh_token)
             token.blacklist()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(status=status.HTTP_200_OK)
         except Exception as e:
             return Response(status= status.HTTP_400_BAD_REQUEST)
+
+class UserInfoView(generics.ListAPIView):
+    """
+    UserInfoView lists all users registered in the web application
+    """
+    queryset = CustomUser.objects.all()
+    serializer_class = UserInfoSerializer
+    permission_classes = (AllowAny,)

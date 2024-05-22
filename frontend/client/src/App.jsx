@@ -4,7 +4,7 @@ import Nav from "./pages/Nav";
 import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import RefreshToken from "./pages/RefreshToken";
+// import RefreshToken from "./pages/RefreshToken";
 
 export default function App() {
   return (
