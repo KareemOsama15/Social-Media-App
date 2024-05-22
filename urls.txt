@@ -80,7 +80,7 @@ request:
 response-data:
     [
         {
-            "id": ,
+            "id": int,
             "username": "",
             "email": ""
         },
@@ -117,13 +117,13 @@ request:
 response-data:
     [
         {
-            "id": 1,
+            "id": int,
             "username": "",
             "content": "",
             "image": "IMAGE_SOURCE",
             "created_at": "",
             "updated_at": "",
-            "likes": 0
+            "likes": int
         },
         ...
     ]
@@ -140,13 +140,13 @@ request:
 
 response-data:
     {
-        "id": 1,
+        "id": int,
         "username": "",
         "content": "",
         "image": "IMAGE_SOURCE",
         "created_at": "",
         "updated_at": "",
-        "likes": 0
+        "likes": int
     }
 
 =========================================
