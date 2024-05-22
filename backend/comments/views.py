@@ -20,7 +20,7 @@ class CommentDelete(APIView):
 
 	def destroy(self,request,pk):
 		try:
-			comment = Comments.objects.get(pk=pk)
+			comment = Comment.objects.get(pk=pk)
 		except Comment.DoesNotExists:
 			raise Http404
 
@@ -29,7 +29,7 @@ class CommentDelete(APIView):
 
 class CommentOfPost(APIView):
 
-   def get(self,request,pk):
-   	 comment = Comment.objects.filter(post=pk)
-   	 serializers = CommentSerializer(comment,many=True)
-   	 return Response(serializers.data)
+	def get(self,request,pk):
+		comment = Comment.objects.filter(post=pk)
+		serializers = CommentSerializer(comment,many=True)
+		return Response(serializers.data)
