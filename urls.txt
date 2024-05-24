@@ -146,7 +146,8 @@ response-data:
         "image": "IMAGE_SOURCE",
         "created_at": "",
         "updated_at": "",
-        "likes": int
+        "likes": int,
+        "comments": "",
     }
 
 =========================================
@@ -194,5 +195,70 @@ request:
 response:
     status-code: 201 [added]
     status-code: 204 [deleted]
+
+=========================================
+-> Create Comment
+http://127.0.0.1:8000/api/posts/id/comment/create/
+
+request:
+    -method: post
+    -headers: accsee-token [Required]
+    -fields:
+        content: Required
+
+response-data:
+    {
+        "content": "",
+        "author__username": "",
+    }
+
+=========================================
+
+-> List Comments
+http://127.0.0.1:8000/api/posts/id/comments
+
+request:
+    -method: get
+    -headers: accsee-token [Required]
+
+response-data:
+    [
+        {
+            "content": "",
+            "author__username": "",
+        },
+        ...
+    ]
+
+=========================================
+
+-> Delete Comment
+http://127.0.0.1:8000/api/posts/id/comment/id/delete/
+
+request:
+    -method: delete
+    -headers: accsee-token [Required]
+    -post_id: Required in url
+
+response:
+    status-code: 204
+
+=========================================
+
+-> Update Post
+http://127.0.0.1:8000/api/posts/id/comment/id/update/
+
+request:
+    -method: put
+    -headers: accsee-token [Required]
+    -post_id: Required in url
+    -fields:
+        content: Required
+
+response-data:
+    {
+        "content": "",
+        "author__username": ""
+    }
 
 =========================================

@@ -20,6 +20,13 @@ class Post(models.Model):
         """property to return a number of likes on post"""
         return Like.objects.filter(post=self.id).count()
 
+    @property
+    def all_comments(self):
+        """get the post's comments"""
+        # print(Comment.objects.filter(post=self.id))
+        comments = Comment.objects.filter(post=self.id).values('content', 'author__username')
+        return comments
+
 """class Connection(models.Model):
     from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
     to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followers')
@@ -32,3 +39,19 @@ class Like(models.Model):
     """Model class for adding Like from user to a post"""
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
+
+
+class Comment(models.Model):
+    """class for Comment of the Post model"""
+    content = models.TextField(null=False)
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='comments_from_posts')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True) 
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments_from_posts')
+
+
+    def __str__(self):
+        return f"{self.author.username} - {self.content[:25]}...Read More"
+
+    class Meta:
+        ordering = ['-updated_at', '-created_at']

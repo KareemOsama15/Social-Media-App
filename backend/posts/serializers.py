@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Post
+from .models import Post, Comment
 
 class PostSerializer(serializers.ModelSerializer):
     """
@@ -15,6 +15,7 @@ class ListRetrievePostSerializer(serializers.ModelSerializer):
     """
     username = serializers.SerializerMethodField(read_only=True)
     likes = serializers.SerializerMethodField(read_only=True)
+    comments = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Post
@@ -25,6 +26,7 @@ class ListRetrievePostSerializer(serializers.ModelSerializer):
                   'created_at',
                   'updated_at',
                   'likes',
+                  'comments',
                   ]
 
     def get_username(self, obj):
@@ -33,3 +35,13 @@ class ListRetrievePostSerializer(serializers.ModelSerializer):
 
     def get_likes(self, obj):
         return obj.num_of_likes
+
+    def get_comments(self, obj):
+        return obj.all_comments
+
+
+class CommentSerializer(serializers.ModelSerializer):
+
+	class Meta:
+		model = Comment
+		fields = ['content']
